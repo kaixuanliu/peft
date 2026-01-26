@@ -235,6 +235,7 @@ def train_with_osf(
     # Load tokenizer and base model
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "left"  # Use left padding for decoder-only models
 
     base_model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.bfloat16, device_map="auto")
 
@@ -400,6 +401,7 @@ def train_full_finetuning(
     # Load tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "left"  # Use left padding for decoder-only models
 
     # Load all datasets with task-specific sizes
     # FOMC only has 496 samples total, so we use 350 train + 146 eval for it
