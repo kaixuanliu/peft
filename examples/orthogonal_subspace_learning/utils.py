@@ -287,11 +287,18 @@ class DataCollatorForCompletionOnly:
             curr_attention_mask = f["attention_mask"][:max_len]
             curr_labels = f["labels"][:max_len]
 
-            # Pad
+            # Pad (use left padding for decoder-only models)
             padding_length = max_len - len(curr_input_ids)
-            curr_input_ids = curr_input_ids + [self.tokenizer.pad_token_id] * padding_length
-            curr_attention_mask = curr_attention_mask + [0] * padding_length
-            curr_labels = curr_labels + [-100] * padding_length
+            if self.tokenizer.padding_side == "left":
+                # Left padding
+                curr_input_ids = [self.tokenizer.pad_token_id] * padding_length + curr_input_ids
+                curr_attention_mask = [0] * padding_length + curr_attention_mask
+                curr_labels = [-100] * padding_length + curr_labels
+            else:
+                # Right padding
+                curr_input_ids = curr_input_ids + [self.tokenizer.pad_token_id] * padding_length
+                curr_attention_mask = curr_attention_mask + [0] * padding_length
+                curr_labels = curr_labels + [-100] * padding_length
 
             input_ids.append(curr_input_ids)
             attention_mask.append(curr_attention_mask)
