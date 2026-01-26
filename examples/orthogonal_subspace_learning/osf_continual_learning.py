@@ -50,6 +50,8 @@ from peft import OSFConfig, get_peft_model
 
 def compute_accuracy_scienceqa(model, eval_dataset, tokenizer, data_collator):
     """Compute accuracy for ScienceQA (extract predicted letter)."""
+    # Ensure left padding for generation
+    tokenizer.padding_side = "left"
     model.eval()
     correct = 0
     total = 0
@@ -98,6 +100,8 @@ def compute_accuracy_scienceqa(model, eval_dataset, tokenizer, data_collator):
 
 def compute_accuracy_numglue(model, eval_dataset, tokenizer, data_collator):
     """Compute accuracy for NumGLUE (extract predicted number)."""
+    # Ensure left padding for generation
+    tokenizer.padding_side = "left"
     model.eval()
     correct = 0
     total = 0
@@ -141,6 +145,8 @@ def compute_accuracy_numglue(model, eval_dataset, tokenizer, data_collator):
 
 def compute_accuracy_fomc(model, eval_dataset, tokenizer, data_collator):
     """Compute accuracy for FOMC (extract predicted sentiment)."""
+    # Ensure left padding for generation
+    tokenizer.padding_side = "left"
     model.eval()
     correct = 0
     total = 0
